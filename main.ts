@@ -17,3 +17,39 @@ let ship = sprites.create(img`
     ......ffffbbbbfffff.....
     ..........fffff.........
 `, SpriteKind.Player)
+ship.setPosition(15, 60)
+controller.moveSprite(ship, 0, 100)
+ship.setStayInScreen(true)
+
+game.onUpdateInterval(500, function() {
+    let rock = sprites.create(img`
+        . . . . . . . . b b b b b . . .
+        . . . . . . b b d d d d b b . .
+        . . . . . b d d d d d d d c . .
+        . . . . c d d d d d d d d c . .
+        . . . c b d d d d d d d b c c .
+        . . . c b b d d d d b c c c c .
+        . . c c d b b b c c c c c c c .
+        . . c c c d d d d c c d d d c c
+        . c d b c c b b c c d d d d d c
+        . c b d d b b b c c d d d d d c
+        . c c b b b b c b c b d d d b c
+        c b b c c c c c b b b b b c c c
+        c c b b c c c c c d d d d d b c
+        c c c c c c b b b b b c c c c c
+        c c c c c c c b b b b b c c c c
+        c c c c c c c c b b b b b c c c
+    `, SpriteKind.Enemy)
+    rock.setPosition (160, randint (0, 120))
+    rock.vx = -50
+rock.setFlag(SpriteFlag.AutoDestroy, true)
+if (info.score()<= 10) {
+rock.vx = -40
+}
+else if (info.score() >=11 && info.score() <=20 ) {
+rock.vx = -60
+}
+})
+sprites.onDestroyed(SpriteKind.Enemy, function(sprite: Sprite) {
+    info.changeScoreBy(1)
+})
